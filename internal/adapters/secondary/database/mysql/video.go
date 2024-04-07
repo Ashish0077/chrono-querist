@@ -2,27 +2,31 @@ package mysql
 
 import (
 	"chrono-querist/internal/core/domain/video"
-	"database/sql"
+	"fmt"
+	"time"
 )
 
 type VideoRepository struct {
-	db *sql.DB
+	// db *sql.DB
 }
 
-func NewVideoRepository(db *sql.DB) *VideoRepository {
+func NewVideoRepository() *VideoRepository {
 	return &VideoRepository{
-		db: db,
+		// db: db,
 	}
 }
 
 func (vr *VideoRepository) Search(query string) ([]video.Video, error) {
-	// Search Query
+	fmt.Printf("Searching for videos with query: %s\n", query)
+	videos := []video.Video{
+		video.NewVideo("SearchVideo", "SearchVideo", "https://example.com/searchvideo.mp4", 120, time.Now()),
+	}
 
-	return nil, nil
+	return videos, nil
 }
 
 func (vr *VideoRepository) Upsert(videos []video.Video) error {
-	// Bulk Upsert Query
+	fmt.Println("Upserting videos...")
 
 	return nil
 }
