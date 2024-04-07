@@ -2,6 +2,7 @@ package web
 
 import (
 	"chrono-querist/internal/ports/primary/API"
+	"fmt"
 	"os"
 
 	"github.com/gofiber/fiber/v2"
@@ -28,5 +29,5 @@ func NewApp(videoService API.VideosPort) *App {
 }
 
 func (app *App) Run() error {
-	return app.fiber.Listen(app.port)
+	return app.fiber.Listen(fmt.Sprintf(":%v", app.port))
 }
