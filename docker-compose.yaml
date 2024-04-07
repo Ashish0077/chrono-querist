@@ -1,0 +1,40 @@
+version: "3"
+services: 
+  db: 
+    image: mysql
+    command: mysqld --default-authentication-plugin=mysql_native_password -h 127.0.0.1
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=Admin123
+      - MYSQL_DATABASE=chrono-querist
+      - MYSQL_USER=chrono
+      - MYSQL_PASSWORD=Admin123
+    volumes:
+      - ./testdb:/docker-entrypoint-initidb.d
+    ports:
+      - "3306:3306"
+
+  api: 
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    entrypoint: /app/main
+    ports:
+      - "9000:9000"
+    depends_on:
+      - db
+    links:
+      - "db:database"
+    environment: 
+      - DB_DRIVER=mysql
+      - PORT=9000
+      - MYSQL_HOST=db
+      - DB_USER_NAME=chrono
+      - DB_PASSWORD=Admin123
+      - DB_SOURCE=chrono-querist
+      - DB_PORT=3306
+      - API_SERVER_PORT=9000
+    networks:
+      - default
+
