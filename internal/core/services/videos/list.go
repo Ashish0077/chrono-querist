@@ -2,8 +2,8 @@ package videos
 
 import "chrono-querist/internal/core/models"
 
-func (srv *Service) Search(query string) ([]models.Video, error) {
-	// Use Repository to search data in database
+func (srv *Service) List(page_number int32, offset int32) ([]models.Video, error) {
+	// Use Repository to fetch data from database
 	// Construct the array of videos
 	// return
 

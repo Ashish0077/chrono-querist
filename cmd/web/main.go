@@ -2,26 +2,17 @@ package main
 
 import (
 	"chrono-querist/internal/adapters/primary/web"
-	"chrono-querist/internal/adapters/secondary/database/mysql"
-	"chrono-querist/internal/core/services/videos"
-	"fmt"
+	videosRepository "chrono-querist/internal/adapters/secondary/repository/videos"
+	videosService "chrono-querist/internal/core/services/videos"
 )
 
 func main() {
-	// fmt.Println("Hello, World!")
+	// Initialize Repository
+	videosRepo := videosRepository.NewAdapter()
 
-	// Initialize the secondary adapters (Port Implementations)
-	videosRepo := mysql.NewVideoRepository()
-	fmt.Println("Video Repo done")
+	// Initialize Service
+	videosService := videosService.NewService(videosRepo)
 
-	// Initialize the core service layer
-	// Business Logic is handled here
-	searchService := videos.NewService(videosRepo)
-	fmt.Println("Search Service done")
-
-	// Init primary adapters (Port Implementations)
-	srv := web.NewApp(searchService, web.WithPort(9000))
-	fmt.Println("Web Server done")
-
-	srv.Run()
+	// Initialize Primary Driving Adapter
+	web.NewApp(videosService).Run()
 }

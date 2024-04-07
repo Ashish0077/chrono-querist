@@ -1,33 +1,32 @@
 package web
 
 import (
-	"chrono-querist/internal/core/services/videos"
-	"fmt"
+	"chrono-querist/internal/ports/primary/API"
+	"os"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 )
 
 type App struct {
-	fiber     *fiber.App
-	videosAPI videos.API
-	port      int
+	fiber        *fiber.App
+	videoService API.VideosPort
+	port         string
 }
 
-func NewApp(videosAPI videos.API, opts ...AppOption) *App {
-	s := &App{
-		fiber:     fiber.New(),
-		videosAPI: videosAPI,
-		port:      9000,
-	}
-	for _, applyOption := range opts {
-		applyOption(s)
+func NewApp(videoService API.VideosPort) *App {
+	app := &App{
+		fiber:        fiber.New(),
+		videoService: videoService,
+		port:         os.Getenv("API_SERVER_PORT"),
 	}
 
-	s.RegisterRoutes()
+	app.fiber.Use(logger.New())
+	app.RegisterRoutes()
 
-	return s
+	return app
 }
 
 func (app *App) Run() error {
-	return app.fiber.Listen(fmt.Sprintf(":%d", app.port))
+	return app.fiber.Listen(app.port)
 }
