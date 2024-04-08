@@ -3,11 +3,12 @@ package videos
 import (
 	"chrono-querist/internal/core/models"
 
-	"github.com/gofiber/fiber/v2/log"
+	"gorm.io/gorm/clause"
 )
 
-func (videoRp *Adapter) Upsert(videos []models.Video) (string, error) {
-	// TODO: write logic to insert data in bulk
-	log.Info("Upserting videos...")
-	return "Success", nil
+func (videoRp *Adapter) Upsert(videos []*models.Video) error {
+	return videoRp.db.Clauses(clause.OnConflict{
+		Columns:   []clause.Column{{Name: "VideoId"}},
+		DoNothing: true,
+	}).Create(&videos).Error
 }
