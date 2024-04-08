@@ -1,0 +1,94 @@
+openapi: 3.0.0
+info:
+  title: chrono-querist
+  description: basic search API to search the stored videos using their title and description.
+  termsOfService: TODO 
+  version:  1.0.0
+  contact:
+    name: Ashish Arora
+    url: https://github.com/Ashish0077
+    email: ashish007722@gmail.com
+servers:
+  - url: http://localhost:9000/videos/search
+    description: Local development server
+paths:
+  /videos/search:
+    get:
+      summary: List & Search videos
+      operationId: indexVideos
+      description: List & Search videos
+      parameters:
+        - name: page_number
+          in: query
+          description: page number
+          required: false
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          description: number of videos per page
+          required: false
+          schema:
+            type: integer
+        - name: title
+          in: query
+          description: title of the video
+          required: false
+          schema:
+            type: string
+        - name: description
+          in: query
+          description: description of the video
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetVideosResponse'
+                
+
+components:
+  schemas:
+    Video:
+      type: object
+      required:
+        - id
+        - title
+        - description
+        - publishedAt
+        - thumbnail
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        publishedAt:
+          type: string
+          format: date-time
+        thumbnail:
+          type: string
+    GetVideosResponse:
+      type: object
+      required:
+        - videos
+        - page
+        - limit
+        - total
+      properties:
+        videos:
+          type: array
+          items:
+            $ref: '#/components/schemas/Video'
+        page:
+          type: integer
+        limit:
+          type: integer
+        total:
+          type: integer
+          format: int64
