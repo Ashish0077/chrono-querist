@@ -13,9 +13,6 @@ A Backend Service written in Golang which takes advantage of Youtube API to stor
   - [Explanation](#explanation)
       - [Database](#database)
     - [API](#api)
-      - [Testing](#testing)
-    - [Youtube Fetcher](#youtube-fetcher)
-    - [DbApp](#dbapp)
 
 ## Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
