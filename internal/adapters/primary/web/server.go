@@ -22,7 +22,11 @@ func NewApp(videoService API.VideosPort) *App {
 		port:         os.Getenv("API_SERVER_PORT"),
 	}
 
-	app.fiber.Use(logger.New())
+	app.fiber.Use(logger.New(logger.Config{
+		// For more options, see the Config section
+		Format: "============>> ${method}#${path} ## QueryParams:${queryParams} ## bodyParams:${bodyParams} ## headers:${reqHeaders}\n",
+	}))
+
 	app.RegisterRoutes()
 
 	return app
