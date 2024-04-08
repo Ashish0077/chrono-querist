@@ -3,8 +3,11 @@ package main
 import (
 	"chrono-querist/internal/adapters/primary/web"
 	videosRepository "chrono-querist/internal/adapters/secondary/repository/videos"
+	videoJobs "chrono-querist/internal/core/jobs/videos"
 	videosService "chrono-querist/internal/core/services/videos"
 	dbUtils "chrono-querist/utils/db"
+
+	"github.com/robfig/cron/v3"
 )
 
 func main() {
@@ -17,6 +20,11 @@ func main() {
 
 	// Initialize Repository
 	videosRepo := videosRepository.NewAdapter(db, sqlDB)
+
+	// Initialize Cron Jobs
+	cronJobs := cron.New()
+	cronJobs.AddFunc("*/5 * * * *", videoJobs.YoutubeDataLoaderJob)
+	cronJobs.Start()
 
 	// Initialize Service
 	videosService := videosService.NewService(videosRepo)

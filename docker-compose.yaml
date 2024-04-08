@@ -35,6 +35,7 @@ services:
       - DB_SOURCE=chrono-querist
       - DB_PORT=3306
       - API_SERVER_PORT=9000
+      - YOUTUBE_API_KEYS=api_key_1,api_key_2,api_key_3
     networks:
       - default
 
