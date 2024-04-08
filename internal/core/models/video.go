@@ -9,27 +9,14 @@ import (
 type Video struct {
 	gorm.Model
 
-	VideoId      string    `gorm:"column:video_id;uniqueIndex;not null;type:text"`
-	Title        string    `gorm:"column:title;not null;type:text"`
-	Description  string    `gorm:"column:description;type:text"`
-	Thumbnail    string    `gorm:"column:thumbnail;type:text"`
-	ChannelTitle string    `gorm:"column:channel_title;type:text"`
+	VideoId      string    `gorm:"column:video_id;index"`
+	Title        string    `gorm:"column:title;index:index_on_title_and_description;class:FULLTEXT;not null"`
+	Description  string    `gorm:"column:description;index:index_on_title_and_description;class:FULLTEXT"`
+	Thumbnail    string    `gorm:"column:thumbnail"`
+	ChannelTitle string    `gorm:"column:channel_title"`
 	PublishedAt  time.Time `gorm:"column:published_at;not null;type:timestamp"`
 }
 
 func (Video) TableName() string {
 	return "videos"
 }
-
-// func NewVideo(title string, description string, url string, duration int, publishedAt time.Time) Video {
-// 	return Video{
-// 		uuid:        uuid.NewString(),
-// 		title:       title,
-// 		description: description,
-// 		duration:    duration,
-// 		url:         url,
-// 		publishedAt: publishedAt,
-// 		createdAt:   time.Now(),
-// 		UpdatedAt:   time.Now(),
-// 	}
-// }
